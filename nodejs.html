@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html class="no-js" dir="ltr" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Getting Started with Node.js on Heroku | Heroku Dev Center</title>
+<link href="/assets/favicon-ec1c49d2d16026c03484fa43c0d3a237.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
+<link rel="alternate" type="application/atom+xml" title="Heroku Recent Articles" href="http://feeds.feedburner.com/herokudevcenterarticles">
+<link rel="alternate" type="application/atom+xml" title="Heroku Changelog" href="http://feeds.feedburner.com/herokuchangelog">
+<link rel="search" type="application/opensearchdescription+xml" title="Heroku Dev Center" href="/opensearch.xml">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+<meta content="authenticity_token" name="csrf-param">
+<meta content="Kinvett83RfqcXZNCsUr0HSK29v3V1g+6wEk5GZrAiY=" name="csrf-token">
+<meta name="description" content="Creating, configuring, deploying and scaling Node.js applications on Heroku, using NPM dependency management, as well as a database and add-ons.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@herokudevcenter">
+<meta name="twitter:title" content="Getting Started with Node.js on Heroku | Heroku Dev Center">
+<meta name="twitter:description" content="Creating, configuring, deploying and scaling Node.js applications on Heroku, using NPM dependency management, as well as a database and add-ons.">
+<meta name="google-site-verification" content="V3T3n-QnyNOZlSVZgEfdXaKkJKyfw2yIP55nR00C8ZU">
+<link href="/assets/public-fb4bc9f2cf437be6097ee44eb5ca17ea.css" media="screen" rel="stylesheet" type="text/css">
+<!--[if IE 6]>
+    <link href="https://universal-ie6-css.googlecode.com/files/ie6.0.3.css" media="screen" rel="stylesheet" type="text/css" />
+    <![endif]--><script type="text/javascript">
+//<![CDATA[
+
+      var activeNav = false,
+          loggedIn = false,
+          displayNotifications = false;
+
+//]]>
+</script><script src="/assets/public-18c44c868d89ce82421f1c7e208ce47c.js" type="text/javascript"></script><!--[if lt IE 9]>
+    <script src="/assets/public/vendor/selectivizr-1.0.min-955f5692124fb865558ac2bd16316241.js" type="text/javascript"></script>
+    <![endif]--><script type="text/javascript">var NREUMQ=NREUMQ||[];NREUMQ.push(["mark","firstbyte",new Date().getTime()]);</script>
+</head>
+<body>
+      <!-- Google Tag Manager -->
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-JD26" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-JD26');</script><!-- End Google Tag Manager --><div class="heroku-header">
+  <div class="heroku-header-container container">
+
+    <div class="heroku-header-hgroup">
+      <a href="/">
+        heroku
+        <strong>dev center</strong>
+      </a>
+    </div>
+
+    <div class="heroku-header-nav">
+      <select class="js-select-nav"><option selected value="https://devcenter.heroku.com">Dev Center</option>
+<option value="https://www.heroku.com/pricing/">Pricing</option>
+<option value="https://help.heroku.com/">Support</option>
+<option value="https://www.heroku.com/contact">Contact</option>
+<option value="https://id.heroku.com/signup/devcenter">Sign up</option>
+<option value="/auth/login?back_to=%2Farticles%2Fnodejs">Login</option></select><ul>
+<li>
+          <a href="https://www.heroku.com/pricing/">Pricing</a>
+        </li>
+        <li>
+          <a href="https://help.heroku.com/">Support</a>
+        </li>
+        <li>
+          <a href="https://www.heroku.com/contact">Contact</a>
+        </li>
+        <li>
+          <a href="https://id.heroku.com/signup/devcenter">Sign up</a>
+        </li>
+        <li>
+          <a href="/auth/login?back_to=%2Farticles%2Fnodejs">Login</a>
+        </li>
+      </ul>
+</div>
+  </div>
+</div>
+    <div class="devcenter-header">
+  <div class="devcenter-header-container container">
+    <ul class="main-nav">
+<li><a class="" href="/articles/quickstart">Get<span class="desktop-only">ting</span> started</a></li>
+      <li><a class="" href="/categories/reference">Reference</a></li>
+      <li><a class="" href="/categories/learning">Learning</a></li>
+    </ul>
+<form class="nav-search" action="/articles" id="home-search" method="GET">
+      <input class="js-search" id="q" name="q" placeholder="search" required="required" type="text">
+</form>
+  </div>
+</div>
+    
+
+    <div id="sheet">
+      <div class="sheet-container container">
+        <div class="select-secondary-nav">
+  <select class="js-select-nav"><optgroup label="Getting Started">
+<option class="option" value="/articles/ruby">
+              Ruby
+            </option>
+<option class="option" value="/articles/rails4-getting-started">
+              Rails
+            </option>
+<option class="option" value="/articles/java">
+              Java
+            </option>
+<option class="option" value="/articles/spring-mvc-hibernate">
+              Spring
+            </option>
+<option class="option" value="/articles/play">
+              Play
+            </option>
+<option class="option" value="/articles/python">
+              Python
+            </option>
+<option class="option" value="/articles/django">
+              Django
+            </option>
+<option class="option" selected value="/articles/nodejs">
+              Node.js
+            </option>
+<option class="option" value="/articles/clojure">
+              Clojure
+            </option>
+<option class="option" value="/articles/facebook">
+              Facebook
+            </option>
+<option class="option" value="/articles/scala">
+              Scala
+            </option>
+</optgroup></select>
+</div>
+
+<ul class="secondary-nav nocontent ">
+<li class="section">
+      <h2>Getting Started</h2>
+        <ul>
+<li class="">
+              <a href="/articles/ruby">Ruby</a>
+            </li>
+            <li class="">
+              <a href="/articles/rails4-getting-started">Rails</a>
+            </li>
+        </ul>
+<ul>
+<li class="">
+              <a href="/articles/java">Java</a>
+            </li>
+            <li class="">
+              <a href="/articles/spring-mvc-hibernate">Spring</a>
+            </li>
+            <li class="">
+              <a href="/articles/play">Play</a>
+            </li>
+        </ul>
+<ul>
+<li class="">
+              <a href="/articles/python">Python</a>
+            </li>
+            <li class="">
+              <a href="/articles/django">Django</a>
+            </li>
+        </ul>
+<ul>
+<li class="active">
+              <a href="/articles/nodejs">Node.js</a>
+            </li>
+        </ul>
+<ul>
+<li class="">
+              <a href="/articles/clojure">Clojure</a>
+            </li>
+        </ul>
+<ul>
+<li class="">
+              <a href="/articles/facebook">Facebook</a>
+            </li>
+        </ul>
+<ul>
+<li class="">
+              <a href="/articles/scala">Scala</a>
+            </li>
+        </ul>
+</li>
+</ul>
+<section class="main"><article class="article autolink "><div id="admin-tabs"></div>
+    
+    
+
+    <header><h1 class="doc">Getting Started with Node.js on Heroku</h1>
+    </header><div class="padder">
+
+
+
+      <p class="meta">
+        Last Updated: 08 August 2013
+      </p>
+
+      <p class="tags">
+        <a href="/tags/nodejs">nodejs</a>
+      </p>
+
+        <section id="table-of-contents"><h3 id="toc">Table of Contents</h3>
+  <ul>
+<li><a href="#prerequisites">Prerequisites</a></li>
+    <li><a href="#local-workstation-setup">Local workstation setup</a></li>
+    <li><a href="#write-your-app">Write your app</a></li>
+    <li><a href="#declare-dependencies-with-npm">Declare dependencies with NPM</a></li>
+    <li><a href="#declare-process-types-with-procfile">Declare process types with Procfile</a></li>
+    <li><a href="#store-your-app-in-git">Store your app in Git</a></li>
+    <li><a href="#deploy-your-application-to-heroku">Deploy your application to Heroku</a></li>
+    <li><a href="#visit-your-application">Visit your application</a></li>
+    <li><a href="#dyno-sleeping-and-scaling">Dyno sleeping and scaling</a></li>
+    <li><a href="#view-the-logs">View the logs</a></li>
+    <li><a href="#setting-node_env">Setting NODE_ENV</a></li>
+    <li><a href="#console">Console</a></li>
+    <li><a href="#advanced-http-features">Advanced HTTP features</a></li>
+    <li><a href="#running-a-worker">Running a worker</a></li>
+    <li><a href="#using-a-postgresql-database">Using a PostgreSQL database</a></li>
+    <li><a href="#using-mongodb">Using MongoDB</a></li>
+    <li><a href="#using-redis">Using Redis</a></li>
+    <li><a href="#troubleshooting">Troubleshooting</a></li>
+    <li><a href="#next-steps">Next steps</a></li>
+  </ul></section><p>This quickstart will get you going with <a href="http://nodejs.org/">Node.js</a> and the <a href="http://expressjs.com/">Express</a> web framework, deployed to Heroku. For general information on how to develop and architect apps for use on Heroku, see <a href="https://devcenter.heroku.com/articles/architecting-apps">Architecting Applications for Heroku</a>.</p>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<ul>
+<li>Basic Node.js knowledge, including an installed version of Node.js and NPM.</li>
+
+<li>Your application must use NPM to manage dependencies.</li>
+
+<li>A Heroku user account. <a href="https://api.heroku.com/signup/devcenter">Signup is free and instant.</a>
+</li>
+</ul>
+<h2 id="local-workstation-setup">Local workstation setup</h2>
+
+<p>Install the <a href="https://toolbelt.heroku.com/">Heroku Toolbelt</a> on your local workstation. This ensures that you have access to the <a href="/categories/command-line">Heroku command-line client</a>, Foreman, and the Git revision control system.</p>
+
+<p>Once installed, you can use the <code>heroku</code> command from your command shell. Log in using the email address and password you used when creating your Heroku account:</p>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="comment">$</span><span class="function"> heroku login
+</span><span class="string">Enter your Heroku credentials.
+</span><span class="string">Email: adam@example.com
+</span><span class="string">Password:
+</span><span class="string">Could not find an existing public key.
+</span><span class="string">Would you like to generate one? [Yn]
+</span><span class="string">Generating new SSH public key.
+</span><span class="string">Uploading ssh public key /Users/adam/.ssh/id_rsa.pub</span></pre></div>
+</div>
+
+
+<p>Press enter at the prompt to upload your existing <code>ssh</code> key or create a new one, used for pushing code later on.</p>
+
+<h2 id="write-your-app">Write your app</h2>
+
+<p>You may be starting from an existing app. If not, here’s a simple “hello, world” sourcefile you can use:</p>
+
+<h3 id="web-js">web.js</h3>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="keyword">var</span> express = require(<span class="string"><span class="delimiter">"</span><span class="content">express</span><span class="delimiter">"</span></span>);
+<span class="keyword">var</span> app = express();
+app.use(express.logger());
+
+app.get(<span class="string"><span class="delimiter">'</span><span class="content">/</span><span class="delimiter">'</span></span>, <span class="keyword">function</span>(request, response) {
+  response.send(<span class="string"><span class="delimiter">'</span><span class="content">Hello World!</span><span class="delimiter">'</span></span>);
+});
+
+<span class="keyword">var</span> port = process.env.PORT || <span class="integer">5000</span>;
+app.listen(port, <span class="keyword">function</span>() {
+  console.log(<span class="string"><span class="delimiter">"</span><span class="content">Listening on </span><span class="delimiter">"</span></span> + port);
+});</pre></div>
+</div>
+
+
+<h2 id="declare-dependencies-with-npm">Declare dependencies with NPM</h2>
+
+<p>Heroku recognizes an app as Node.js by the existence of a <code>package.json</code>. Even if your app has no dependencies, you should still create a <code>package.json</code> that declares a name, version, and empty dependencies in order that it appear as a Node app.</p>
+
+<p>Here’s an example <code>package.json</code> for the Express app we created above:</p>
+
+<h3 id="package-json">package.json</h3>
+
+<div class="CodeRay">
+  <div class="code"><pre>{
+  <span class="key"><span class="delimiter">"</span><span class="content">name</span><span class="delimiter">"</span></span>: <span class="string"><span class="delimiter">"</span><span class="content">node-example</span><span class="delimiter">"</span></span>,
+  <span class="key"><span class="delimiter">"</span><span class="content">version</span><span class="delimiter">"</span></span>: <span class="string"><span class="delimiter">"</span><span class="content">0.0.1</span><span class="delimiter">"</span></span>,
+  <span class="key"><span class="delimiter">"</span><span class="content">dependencies</span><span class="delimiter">"</span></span>: {
+    <span class="key"><span class="delimiter">"</span><span class="content">express</span><span class="delimiter">"</span></span>: <span class="string"><span class="delimiter">"</span><span class="content">3.1.x</span><span class="delimiter">"</span></span>
+  },
+  <span class="key"><span class="delimiter">"</span><span class="content">engines</span><span class="delimiter">"</span></span>: {
+    <span class="key"><span class="delimiter">"</span><span class="content">node</span><span class="delimiter">"</span></span>: <span class="string"><span class="delimiter">"</span><span class="content">0.10.x</span><span class="delimiter">"</span></span>,
+    <span class="key"><span class="delimiter">"</span><span class="content">npm</span><span class="delimiter">"</span></span>: <span class="string"><span class="delimiter">"</span><span class="content">1.2.x</span><span class="delimiter">"</span></span>
+  }
+}</pre></div>
+</div>
+
+
+<p>Now use <code>npm</code> to install your dependencies locally:</p>
+<div class="callout">
+<p>Node <a href="http://www.futurealoof.com/posts/nodemodules-in-git.html">best practice</a> is to include the <code>node_modules</code> directory in your source repository for faster deploys and <a href="http://www.12factor.net/dev-prod-parity">dev/prod parity</a>.</p>
+</div>
+<div class="CodeRay">
+  <div class="code"><pre><span class="comment">$</span><span class="function"> npm install</span></pre></div>
+</div>
+
+
+<p>Make sure that all of your app’s dependencies are declared in <code>package.json</code> and that you are not relying on any system-level packages.</p>
+
+<h2 id="declare-process-types-with-procfile">Declare process types with Procfile</h2>
+
+<p>Use a <a href="/articles/procfile">Procfile</a>, a text file in the root directory of your application, to explicitly declare what command should be executed to start a web <a href="/articles/dynos">dyno</a>. In this case, you simply need to execute the Node script using <code>node</code>.</p>
+
+<p>Here’s a <code>Procfile</code> for the sample app we’ve been working on:</p>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="string">web: node web.js</span></pre></div>
+</div>
+
+
+<p>This declares a single process type, <code>web</code>, and the command needed to run it. The name “web” is important here. It declares that this process type will be attached to the <a href="/articles/http-routing">HTTP routing</a> stack of Heroku, and receive web traffic when deployed.</p>
+
+<p>You can now start your application locally using <a href="http://blog.daviddollar.org/2011/05/06/introducing-foreman.html">Foreman</a> (installed as part of the Toolbelt):</p>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="comment">$</span><span class="function"> foreman start
+</span><span class="string">14:39:04 web.1     | started with pid 24384
+</span><span class="string">14:39:04 web.1     | Listening on 5000</span></pre></div>
+</div>
+
+
+<p>Your app will come up on port 5000. Test that it’s working with <code>curl</code> or a web browser, then Ctrl-C to exit.</p>
+
+<h2 id="store-your-app-in-git">Store your app in Git</h2>
+
+<p>We now have the three major components of our app: dependencies in <code>package.json</code>, process types in <code>Procfile</code>, and our application source in <code>web.js</code>. Let’s put it into Git:</p>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="comment">$</span><span class="function"> git init
+</span><span class="comment">$</span><span class="function"> git add .
+</span><span class="comment">$</span><span class="function"> git commit -m "init"</span></pre></div>
+</div>
+
+
+<h2 id="deploy-your-application-to-heroku">Deploy your application to Heroku</h2>
+
+<p>Create the app:</p>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="comment">$</span><span class="function"> heroku create
+</span><span class="string">Creating sharp-rain-871... done, stack is cedar
+</span><span class="string">http://sharp-rain-871.herokuapp.com/ | git@heroku.com:sharp-rain-871.git
+</span><span class="string">Git remote heroku added</span></pre></div>
+</div>
+
+
+<p>Deploy your code:</p>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="comment">$</span><span class="function"> git push heroku master
+</span><span class="string">Counting objects: 343, done.
+</span><span class="string">Delta compression using up to 4 threads.
+</span><span class="string">Compressing objects: 100% (224/224), done.
+</span><span class="string">Writing objects: 100% (250/250), 238.01 KiB, done.
+</span><span class="string">Total 250 (delta 63), reused 0 (delta 0)
+</span><span class="string">
+</span><span class="string">-----&gt; Node.js app detected
+</span><span class="string">-----&gt; Resolving engine versions
+</span><span class="string">       Using Node.js version: 0.10.3
+</span><span class="string">       Using npm version: 1.2.18
+</span><span class="string">-----&gt; Fetching Node.js binaries
+</span><span class="string">-----&gt; Vendoring node into slug
+</span><span class="string">-----&gt; Installing dependencies with npm
+</span><span class="string">       ....
+</span><span class="string">       Dependencies installed
+</span><span class="string">-----&gt; Building runtime environment
+</span><span class="string">-----&gt; Discovering process types
+</span><span class="string">       Procfile declares types -&gt; web
+</span><span class="string">
+</span><span class="string">-----&gt; Compiled slug size: 4.1MB
+</span><span class="string">-----&gt; Launching... done, v9
+</span><span class="string">       http://sharp-rain-871.herokuapp.com deployed to Heroku
+</span><span class="string">
+</span><span class="string">To git@heroku.com:sharp-rain-871.git
+</span><span class="string"> * [new branch]      master -&gt; master</span></pre></div>
+</div>
+
+
+<h2 id="visit-your-application">Visit your application</h2>
+
+<p>You’ve deployed your code to Heroku, and specified the process types in a <code>Procfile</code>. You can now instruct Heroku to execute a process type. Heroku does this by running the associated command in a <a href="/articles/dynos">dyno</a> - a lightweight container which is the basic unit of composition on Heroku.</p>
+
+<p>Let’s ensure we have one dyno running the <code>web</code> process type:</p>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="comment">$</span><span class="function"> heroku ps:scale web=1</span></pre></div>
+</div>
+
+
+<p>You can check the state of the app’s dynos. The <code>heroku ps</code> command lists the running dynos of your application:</p>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="comment">$</span><span class="function"> heroku ps
+</span><span class="string">=== web: `node web.js`
+</span><span class="string">web.1: up for 10s</span></pre></div>
+</div>
+
+
+<p>Here, one dyno is running.</p>
+
+<p>We can now visit the app in our browser with <code>heroku open</code>.</p>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="comment">$</span><span class="function"> heroku open
+</span><span class="string">Opening sharp-rain-871... done</span></pre></div>
+</div>
+
+
+<h2 id="dyno-sleeping-and-scaling">Dyno sleeping and scaling</h2>
+
+<p>Having only a single web dyno running will result in the dyno <a href="/articles/dynos#dyno-sleeping">going to sleep</a> after one hour of inactivity. This causes a delay of a few seconds for the first request upon waking. Subsequent requests will perform normally.</p>
+
+<p>To avoid this, you can scale to more than one web dyno. For example:</p>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="comment">$</span><span class="function"> heroku ps:scale web=2</span></pre></div>
+</div>
+
+
+<p>For each application, Heroku provides <a href="/articles/usage-and-billing#750-free-dyno-hours-per-app">750 free dyno-hours</a>. Running your app at 2 dynos would exceed this free, monthly allowance, so let’s scale back:</p>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="comment">$</span><span class="function"> heroku ps:scale web=1</span></pre></div>
+</div>
+
+
+<h2 id="view-the-logs">View the logs</h2>
+
+<p>Heroku treats logs as streams of time-ordered events aggregated from the output streams of all the dynos running the components of your application. Heroku’s <a href="/articles/logplex">Logplex</a> provides a single channel for all of these events.</p>
+
+<p>View information about your running app using one of the <a href="/articles/logging">logging commands</a>, <code>heroku logs</code>:</p>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="comment">$</span><span class="function"> heroku logs
+</span><span class="string">2011-03-10T10:22:30-08:00 heroku[web.1]: State changed from created to starting
+</span><span class="string">2011-03-10T10:22:32-08:00 heroku[web.1]: Running process with command: `node web.js`
+</span><span class="string">2011-03-10T10:22:33-08:00 heroku[web.1]: Listening on 18320
+</span><span class="string">2011-03-10T10:22:34-08:00 heroku[web.1]: State changed from starting to up</span></pre></div>
+</div>
+
+
+<h2 id="setting-node_env">Setting NODE_ENV</h2>
+
+<p>The Express framework uses the <code>NODE_ENV</code> environment variable to determine some behaviors related to caching. If you’re using Express, set a config var with this value:</p>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="comment">$</span><span class="function"> heroku config:set NODE_ENV=production
+</span><span class="string">Adding config vars:
+</span><span class="string">  NODE_ENV =&gt; production
+</span><span class="string">Restarting app... done, v3.</span></pre></div>
+</div>
+
+
+<h2 id="console">Console</h2>
+
+<p>Heroku allows you to run commands in a <a href="/articles/oneoff-admin-ps">one-off dyno</a> - scripts and applications that only need to be executed when needed - using the <code>heroku run</code> command. Use this to launch a REPL process attached to your local terminal for experimenting in your app’s environment:</p>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="comment">$</span><span class="function"> heroku run node
+</span><span class="string">Running `node` attached to terminal... up, ps.1
+</span><span class="string">&gt;</span></pre></div>
+</div>
+
+
+<p>This console has nothing loaded other than the Node.js standard library. From here you can <code>require</code> some of your application files.</p>
+
+<h2 id="advanced-http-features">Advanced HTTP features</h2>
+<div class="callout">
+<p>The WebSockets protocol is not yet supported on the Cedar stack.</p>
+</div>
+<p>The HTTP stack available to Cedar apps on the <code>herokuapp.com</code> subdomain supports HTTP 1.1, long polling, and chunked responses.</p>
+
+<h2 id="running-a-worker">Running a worker</h2>
+
+<p>The <code>Procfile</code> format lets you run any number of different <a href="/articles/procfile">process types</a>. For example, let’s say you wanted a worker process to complement your web process:</p>
+
+<h4 id="procfile">Procfile</h4>
+
+<div class="CodeRay">
+  <div class="code"><pre>web: node web.js
+worker: node worker.js</pre></div>
+</div>
+
+<div class="callout">
+<p>Running more than one dyno for an extended period may incur charges to your account. Read more about <a href="/articles/usage-and-billing">dyno-hour costs</a>.</p>
+</div>
+<p>Push this change to Heroku, then launch a worker:</p>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="comment">$</span><span class="function"> heroku ps:scale worker=1
+</span><span class="string">Scaling worker processes... done, now running 1</span></pre></div>
+</div>
+
+
+<h2 id="using-a-postgresql-database">Using a PostgreSQL database</h2>
+
+<p>To add the free Heroku Postgres Starter Tier dev database to your app, run this command:</p>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="comment">$</span><span class="function"> heroku addons:add heroku-postgresql:dev
+</span><span class="string">Adding heroku-postgresql:dev... done, v3 (free)</span></pre></div>
+</div>
+
+
+<p>This sets the <code>DATABASE_URL</code> environment variable. Add the <a href="https://npmjs.org/package/pg">pg npm module</a> to your dependencies:</p>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="string"><span class="delimiter">"</span><span class="content">dependencies</span><span class="delimiter">"</span></span>: {
+  <span class="key"><span class="delimiter">"</span><span class="content">pg</span><span class="delimiter">"</span></span>: <span class="string"><span class="delimiter">"</span><span class="content">2.x</span><span class="delimiter">"</span></span>,
+  <span class="key"><span class="delimiter">"</span><span class="content">express</span><span class="delimiter">"</span></span>: <span class="string"><span class="delimiter">"</span><span class="content">3.x</span><span class="delimiter">"</span></span>
+}</pre></div>
+</div>
+
+
+<p>And use the module to connect to <code>DATABASE_URL</code> from somewhere in your code:</p>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="keyword">var</span> pg = require(<span class="string"><span class="delimiter">'</span><span class="content">pg</span><span class="delimiter">'</span></span>);
+
+pg.connect(process.env.DATABASE_URL, <span class="keyword">function</span>(err, client, done) {
+  client.query(<span class="string"><span class="delimiter">'</span><span class="content">SELECT * FROM your_table</span><span class="delimiter">'</span></span>, <span class="keyword">function</span>(err, result) {
+    done();
+    <span class="keyword">if</span>(err) <span class="keyword">return</span> console.error(err);
+    console.log(result.rows);
+  });
+});</pre></div>
+</div>
+
+
+<p>Read more about <a href="/articles/heroku-postgresql">Heroku PostgreSQL</a>.</p>
+
+<h2 id="using-mongodb">Using MongoDB</h2>
+
+<p>To add a MongoDB database to your app, provision one of the <a href="https://addons.heroku.com/marketplace/#data-stores">MongoDB add-ons</a>:</p>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="comment">$</span><span class="function"> heroku addons:add mongolab</span></pre></div>
+</div>
+
+
+<p>Add the <code>mongodb</code> NPM module to your dependencies:</p>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="string"><span class="delimiter">"</span><span class="content">dependencies</span><span class="delimiter">"</span></span>: {
+  <span class="error">.</span><span class="error">.</span><span class="error">.</span>
+  <span class="key"><span class="delimiter">"</span><span class="content">mongodb</span><span class="delimiter">"</span></span> : <span class="string"><span class="delimiter">"</span><span class="content">1.1.11</span><span class="delimiter">"</span></span>
+  }</pre></div>
+</div>
+
+
+<p>Use the module to connect to using the provisioned MongoDB URL located in the environment.</p>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="keyword">var</span> mongo = require(<span class="string"><span class="delimiter">'</span><span class="content">mongodb</span><span class="delimiter">'</span></span>);
+
+<span class="keyword">var</span> mongoUri = process.env.MONGOLAB_URI ||
+  process.env.MONGOHQ_URL ||
+  <span class="string"><span class="delimiter">'</span><span class="content">mongodb://localhost/mydb</span><span class="delimiter">'</span></span>;
+
+mongo.Db.connect(mongoUri, <span class="keyword">function</span> (err, db) {
+  db.collection(<span class="string"><span class="delimiter">'</span><span class="content">mydocs</span><span class="delimiter">'</span></span>, <span class="keyword">function</span>(er, collection) {
+    collection.insert({<span class="key"><span class="delimiter">'</span><span class="content">mykey</span><span class="delimiter">'</span></span>: <span class="string"><span class="delimiter">'</span><span class="content">myvalue</span><span class="delimiter">'</span></span>}, {<span class="key">safe</span>: <span class="predefined-constant">true</span>}, <span class="keyword">function</span>(er,rs) {
+    });
+  });
+});</pre></div>
+</div>
+
+
+<h2 id="using-redis">Using Redis</h2>
+
+<p>To add a Redis database to your app, run this command:</p>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="comment">$</span><span class="function"> heroku addons:add redistogo</span></pre></div>
+</div>
+
+
+<p>This sets the <code>REDISTOGO_URL</code> environment variable. Add the <code>redis-url</code> NPM module to your dependencies:</p>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="string"><span class="delimiter">"</span><span class="content">dependencies</span><span class="delimiter">"</span></span>: {
+  ...
+  <span class="string"><span class="delimiter">"</span><span class="content">redis-url</span><span class="delimiter">"</span></span>: <span class="string"><span class="delimiter">"</span><span class="content">0.1.0</span><span class="delimiter">"</span></span>
+}</pre></div>
+</div>
+
+
+<p>And use the module to connect to <code>REDISTOGO_URL</code> from somewhere in your code:</p>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="keyword">var</span> redis = require(<span class="string"><span class="delimiter">'</span><span class="content">redis-url</span><span class="delimiter">'</span></span>).connect(process.env.REDISTOGO_URL);
+
+redis.set(<span class="string"><span class="delimiter">'</span><span class="content">foo</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">bar</span><span class="delimiter">'</span></span>);
+
+redis.get(<span class="string"><span class="delimiter">'</span><span class="content">foo</span><span class="delimiter">'</span></span>, <span class="keyword">function</span>(err, value) {
+  console.log(<span class="string"><span class="delimiter">'</span><span class="content">foo is: </span><span class="delimiter">'</span></span> + value);
+});</pre></div>
+</div>
+
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+<p>If you push up your app and it crashes (<code>heroku ps</code> shows state <code>crashed</code>), check your logs to find out what went wrong. Here are some common problems.</p>
+
+<h3 id="missing-a-dependency">Missing a dependency</h3>
+
+<p>If your app crashes due to missing a dependency, you may have it installed locally but not specified in your <code>package.json</code>.</p>
+
+<h2 id="next-steps">Next steps</h2>
+
+<ul>
+<li>Visit the <a href="/categories/nodejs">Node.js category</a> to learn more about developing and deploying Node.js applications.</li>
+
+<li>Read <a href="/articles/how-heroku-works">How Heroku Works</a> for a technical overview of the concepts you’ll encounter while writing, configuring, deploying and running applications.</li>
+</ul>
+<section class="js-article-feedback article-feedback nocontent"><div class="step1">
+          <h2 id="feedback"><a href="#feedback">Feedback</a></h2>
+          <p>
+            If this article is incorrect or outdated, or omits critical information, please <a class="open" href="#">let us know</a>.
+            For all other issues, please see our <a href="https://devcenter.heroku.com/articles/support-channels">support channels</a>.
+          </p>
+          <form accept-charset="UTF-8" action="/articles/nodejs/feedback" autocomplete="off" class="step2" method="post">
+<div style="margin:0;padding:0;display:inline">
+<input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="FbmXgCK62Vg+C6v09mx5fdkKipv9YAvcI75NbzhyDS0=">
+</div>
+            <input class="email" name="email" type="text" value=""><textarea name="feedback_text"></textarea><p class="record-warning">
+              <span class="js-hide-unless-logged-in">
+                The maintainer of this article will have access to your email address.
+              </span>
+              <span class="js-hide-if-logged-in">
+                <a href="/auth/login?back_to=%2Farticles%2Fnodejs&amp;utm_campaign=login&amp;utm_medium=feedback&amp;utm_source=web">Login</a> to record your email address with this feedback.
+              </span>
+            </p>
+            <input type="submit" value="Submit">
+</form>        </div>
+        <p class="step3">
+          Your feedback has been sent to the <a href="mailto:devcenter-feedback@heroku.com">Dev Center</a> team. Thank you.
+        </p>
+      </section>
+</div>
+  </article><section class="nocontent" id="pagination"><a href="/articles/realtime-polyglot-app-node-ruby-mongodb-socketio" id="previous">« Building a Real-time, Polyglot Application with Node.js, Ruby, MongoDB and Socket.IO</a>
+  <a href="/articles/nodejs-mongoose" id="next">Object Modeling in Node.js with Mongoose »</a>
+</section></section><script type="text/javascript">
+//<![CDATA[
+
+  var activeNav = 1;
+  var referenceId = 489;
+  var feedbackCounter = 1;
+
+//]]>
+</script>
+</div>
+    </div>
+
+    <script type="text/javascript">
+//<![CDATA[
+
+      if (document.cookie.indexOf('heroku_session=') != -1) {
+        $('#heroku-header-link-support').attr('href', 'https://support.heroku.com/');
+        $('#heroku-account-nav-logged_in').show();
+        $('#heroku-header-link-login').hide();
+      }
+
+//]]>
+</script><script type="text/javascript">if (!NREUMQ.f) { NREUMQ.f=function() {
+NREUMQ.push(["load",new Date().getTime()]);
+var e=document.createElement("script");
+e.type="text/javascript";
+e.src=(("http:"===document.location.protocol)?"http:":"https:") + "//" +
+  "js-agent.newrelic.com/nr-100.js";
+document.body.appendChild(e);
+if(NREUMQ.a)NREUMQ.a();
+};
+NREUMQ.a=window.onload;window.onload=NREUMQ.f;
+};
+NREUMQ.push(["nrfj","beacon-3.newrelic.com","ae43571cb3","2057789","dVwNTUMJVV9WR05REUJaAFVUFRZAW1oW",12,25,new Date().getTime(),"","","","",""]);</script>
+</body>
+</html>
