@@ -3,7 +3,7 @@ var app = express();
 app.use(express.logger());
 
 app.get('/', function(request, response) {
-  response.send(__filename);
+  response.send("Boogie executed from" + __filename);
 });
 
 var port = process.env.PORT || 5000;
